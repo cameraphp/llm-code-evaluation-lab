@@ -1,0 +1,15 @@
+{
+  "purpose": "Owner-side calibration expectations for the seeded fixtures. They are compared AFTER scoring to confirm the suite detects the known defects. Scoring never reads them, and candidates cannot influence them.",
+  "provenance": "Derived from fixtures/*/DEFECTS.md (AI-assisted, pending owner review).",
+  "expected": [
+    {"task_id": "task-01", "candidate_id": "flawed", "failed_checks": ["T1-S01", "T1-S02", "T1-R02"], "verdict": "BLOCKED"},
+    {"task_id": "task-01", "candidate_id": "partial", "failed_checks": ["T1-S01"], "verdict": "BLOCKED"},
+    {"task_id": "task-01", "candidate_id": "reference", "failed_checks": [], "verdict": "REVIEW_PENDING"},
+    {"task_id": "task-02", "candidate_id": "flawed", "failed_checks": ["T2-C01", "T2-S01", "T2-S02", "T2-S03"], "verdict": "BLOCKED"},
+    {"task_id": "task-02", "candidate_id": "partial", "failed_checks": ["T2-C04"], "verdict": "BLOCKED"},
+    {"task_id": "task-02", "candidate_id": "reference", "failed_checks": [], "verdict": "REVIEW_PENDING"},
+    {"task_id": "task-03", "candidate_id": "flawed", "failed_checks": ["T3-C02", "T3-C04", "T3-S01", "T3-S02", "T3-S03", "T3-R02", "T3-R03"], "verdict": "BLOCKED"},
+    {"task_id": "task-03", "candidate_id": "partial", "failed_checks": ["T3-C03"], "verdict": "CHANGES_REQUESTED"},
+    {"task_id": "task-03", "candidate_id": "reference", "failed_checks": [], "verdict": "REVIEW_PENDING"}
+  ]
+}

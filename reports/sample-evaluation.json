@@ -1,0 +1,569 @@
+{
+  "annotation_agreement_demo": {
+    "categories": [
+      "CLEAR",
+      "NEEDS_IMPROVEMENT",
+      "POOR"
+    ],
+    "cohen_kappa": {
+      "fraction": "1/2",
+      "value": 0.5
+    },
+    "confusion": {
+      "CLEAR": {
+        "CLEAR": 2,
+        "NEEDS_IMPROVEMENT": 0,
+        "POOR": 0
+      },
+      "NEEDS_IMPROVEMENT": {
+        "CLEAR": 1,
+        "NEEDS_IMPROVEMENT": 1,
+        "POOR": 0
+      },
+      "POOR": {
+        "CLEAR": 0,
+        "NEEDS_IMPROVEMENT": 1,
+        "POOR": 1
+      }
+    },
+    "exact_agreement": {
+      "fraction": "2/3",
+      "value": 0.6667
+    },
+    "expected_agreement": {
+      "fraction": "1/3",
+      "value": 0.3333
+    },
+    "interpretation_limit": "Hand-crafted synthetic labels on a tiny sample; demonstrates computation only. Not a measure of real human or model agreement, and agreement is not accuracy.",
+    "kappa_status": "defined",
+    "missing_label_items": [],
+    "paired_n": 6,
+    "reviewers": [
+      "example-reviewer-A",
+      "example-reviewer-B"
+    ],
+    "source": "synthetic_example",
+    "unpaired_items": []
+  },
+  "candidates": [
+    {
+      "automated_score": {
+        "earned": 52,
+        "max": 90
+      },
+      "blocking_failures": [
+        "T1-S01",
+        "T1-S02",
+        "T1-R02"
+      ],
+      "calibration": {
+        "expected_failed_checks": [
+          "T1-R02",
+          "T1-S01",
+          "T1-S02"
+        ],
+        "expected_verdict": "BLOCKED",
+        "match": true
+      },
+      "candidate_id": "flawed",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [
+        {
+          "check_id": "T1-S01",
+          "failed_evidence_ids": [
+            "T1-S01:variant_customer_ref_status",
+            "T1-S01:variant_customer_ref_no_order",
+            "T1-S01:variant_currency_status",
+            "T1-S01:variant_currency_no_order",
+            "T1-S01:variant_quantity_status",
+            "T1-S01:variant_quantity_no_order",
+            "T1-S01:variant_unit_price_minor_status",
+            "T1-S01:variant_unit_price_minor_no_order",
+            "T1-S01:variant_item_added_status",
+            "T1-S01:variant_item_added_no_order"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T1-S02",
+          "failed_evidence_ids": [
+            "T1-S02:statuses",
+            "T1-S02:same_order_id",
+            "T1-S02:stored_orders",
+            "T1-S02:stored_key_records",
+            "T1-S02:stored_identity"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T1-R02",
+          "failed_evidence_ids": [
+            "T1-R02:replay_status",
+            "T1-R02:replay_identity",
+            "T1-R02:stored_orders",
+            "T1-R02:stored_fields",
+            "T1-R02:stored_key_records",
+            "T1-R02:stored_identity"
+          ],
+          "severity": "critical"
+        }
+      ],
+      "fixture_sha256": "b8d805a66c07d18d9cdea643fe0339830a3db08b3e9d2ece6c652b2b36c1ee35",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {
+        "T1-R02": "Idempotency state is held in memory and lost when the handler or connection restarts.",
+        "T1-S01": "The request fingerprint is not compared on replay, or it omits material fields.",
+        "T1-S02": "Idempotency is not enforced by durable state inside a serialized write transaction (for example a process-local cache or check-then-insert without a unique key)."
+      },
+      "task_id": "task-01",
+      "total_score": null,
+      "verdict": "BLOCKED"
+    },
+    {
+      "automated_score": {
+        "earned": 75,
+        "max": 90
+      },
+      "blocking_failures": [
+        "T1-S01"
+      ],
+      "calibration": {
+        "expected_failed_checks": [
+          "T1-S01"
+        ],
+        "expected_verdict": "BLOCKED",
+        "match": true
+      },
+      "candidate_id": "partial",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [
+        {
+          "check_id": "T1-S01",
+          "failed_evidence_ids": [
+            "T1-S01:variant_quantity_status",
+            "T1-S01:variant_quantity_no_order",
+            "T1-S01:variant_unit_price_minor_status",
+            "T1-S01:variant_unit_price_minor_no_order"
+          ],
+          "severity": "critical"
+        }
+      ],
+      "fixture_sha256": "1d306ffd2d334ec811fdf8fc93d76d613e8d94105310f95b25e197da8477b68e",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {
+        "T1-S01": "The request fingerprint is not compared on replay, or it omits material fields."
+      },
+      "task_id": "task-01",
+      "total_score": null,
+      "verdict": "BLOCKED"
+    },
+    {
+      "automated_score": {
+        "earned": 90,
+        "max": 90
+      },
+      "blocking_failures": [],
+      "calibration": {
+        "expected_failed_checks": [],
+        "expected_verdict": "REVIEW_PENDING",
+        "match": true
+      },
+      "candidate_id": "reference",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [],
+      "fixture_sha256": "72d03a29e48716bd1ed1e12bdedb095f8291d16115fa91f1e9c460093c615de6",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {},
+      "task_id": "task-01",
+      "total_score": null,
+      "verdict": "REVIEW_PENDING"
+    },
+    {
+      "automated_score": {
+        "earned": 48,
+        "max": 90
+      },
+      "blocking_failures": [
+        "T2-S01",
+        "T2-S02",
+        "T2-S03"
+      ],
+      "calibration": {
+        "expected_failed_checks": [
+          "T2-C01",
+          "T2-S01",
+          "T2-S02",
+          "T2-S03"
+        ],
+        "expected_verdict": "BLOCKED",
+        "match": true
+      },
+      "candidate_id": "flawed",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [
+        {
+          "check_id": "T2-C01",
+          "failed_evidence_ids": [
+            "T2-C01:fields",
+            "T2-C01:exposed_categories"
+          ],
+          "severity": "major"
+        },
+        {
+          "check_id": "T2-S01",
+          "failed_evidence_ids": [
+            "T2-S01:cross_tenant_status",
+            "T2-S01:cross_tenant_body",
+            "T2-S01:indistinguishable",
+            "T2-S01:cross_tenant_exposed",
+            "T2-S01:reverse_status",
+            "T2-S01:reverse_no_data"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T2-S02",
+          "failed_evidence_ids": [
+            "T2-S02:list_header_ids",
+            "T2-S02:list_param_ids",
+            "T2-S02:get_spoofed_status",
+            "T2-S02:get_spoofed_exposed"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T2-S03",
+          "failed_evidence_ids": [
+            "T2-S03:bodies_exact_errors",
+            "T2-S03:bodies_exposed",
+            "T2-S03:audit_shape",
+            "T2-S03:audit_exposed"
+          ],
+          "severity": "critical"
+        }
+      ],
+      "fixture_sha256": "ae5c9d4c3b57af96e57281e0fc7acd705d67bca463fbc8168fce1e1256418193",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {
+        "T2-C01": "The read path returns the whole stored row instead of a field allowlist.",
+        "T2-S01": "The object lookup is keyed by document_id only, without the principal's tenant.",
+        "T2-S02": "Request headers or params are consulted when deriving tenant or roles.",
+        "T2-S03": "Denial paths serialize the raw request or the stored record into responses or audit events."
+      },
+      "task_id": "task-02",
+      "total_score": null,
+      "verdict": "BLOCKED"
+    },
+    {
+      "automated_score": {
+        "earned": 80,
+        "max": 90
+      },
+      "blocking_failures": [
+        "T2-C04"
+      ],
+      "calibration": {
+        "expected_failed_checks": [
+          "T2-C04"
+        ],
+        "expected_verdict": "BLOCKED",
+        "match": true
+      },
+      "candidate_id": "partial",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [
+        {
+          "check_id": "T2-C04",
+          "failed_evidence_ids": [
+            "T2-C04:list_status",
+            "T2-C04:list_body",
+            "T2-C04:list_no_data"
+          ],
+          "severity": "critical"
+        }
+      ],
+      "fixture_sha256": "7497d8ac9271a021db15cf9864828131e0f5837482f92c4817d3928854339101",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {
+        "T2-C04": "The permission check is missing for at least one operation (function-level authorization)."
+      },
+      "task_id": "task-02",
+      "total_score": null,
+      "verdict": "BLOCKED"
+    },
+    {
+      "automated_score": {
+        "earned": 90,
+        "max": 90
+      },
+      "blocking_failures": [],
+      "calibration": {
+        "expected_failed_checks": [],
+        "expected_verdict": "REVIEW_PENDING",
+        "match": true
+      },
+      "candidate_id": "reference",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [],
+      "fixture_sha256": "ee4f784a54302253f9591f1ef1993a37cd96522f215a13fab424d20db0d13a23",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {},
+      "task_id": "task-02",
+      "total_score": null,
+      "verdict": "REVIEW_PENDING"
+    },
+    {
+      "automated_score": {
+        "earned": 26,
+        "max": 90
+      },
+      "blocking_failures": [
+        "T3-C02",
+        "T3-C04",
+        "T3-S01",
+        "T3-S03",
+        "T3-R02",
+        "T3-R03"
+      ],
+      "calibration": {
+        "expected_failed_checks": [
+          "T3-C02",
+          "T3-C04",
+          "T3-R02",
+          "T3-R03",
+          "T3-S01",
+          "T3-S02",
+          "T3-S03"
+        ],
+        "expected_verdict": "BLOCKED",
+        "match": true
+      },
+      "candidate_id": "flawed",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [
+        {
+          "check_id": "T3-C02",
+          "failed_evidence_ids": [
+            "T3-C02:case_extra_arg",
+            "T3-C02:case_bad_pattern_arg",
+            "T3-C02:case_bad_enum_arg",
+            "T3-C02:case_sets_max_attempts",
+            "T3-C02:no_rows",
+            "T3-C02:no_attempts",
+            "T3-C02:no_invocations"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T3-C04",
+          "failed_evidence_ids": [
+            "T3-C04:changed_args_status",
+            "T3-C04:changed_tool_status",
+            "T3-C04:other_agent_status"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T3-S01",
+          "failed_evidence_ids": [
+            "T3-S01:statuses_before_run",
+            "T3-S01:status_after_success",
+            "T3-S01:duplicate_flag",
+            "T3-S01:runs",
+            "T3-S01:applied_effects"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T3-S02",
+          "failed_evidence_ids": [
+            "T3-S02:no_exception_detail"
+          ],
+          "severity": "major"
+        },
+        {
+          "check_id": "T3-S03",
+          "failed_evidence_ids": [
+            "T3-S03:ok_job_effects",
+            "T3-S03:failing_job_invocations",
+            "T3-S03:total_invocations",
+            "T3-S03:final_states"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T3-R02",
+          "failed_evidence_ids": [
+            "T3-R02:attempts_per_run",
+            "T3-R02:invocations",
+            "T3-R02:final_job"
+          ],
+          "severity": "critical"
+        },
+        {
+          "check_id": "T3-R03",
+          "failed_evidence_ids": [
+            "T3-R03:duplicate_statuses",
+            "T3-R03:pending_retry_after_restart",
+            "T3-R03:completed_after_restart",
+            "T3-R03:attempts_per_run",
+            "T3-R03:a_applied",
+            "T3-R03:b_final"
+          ],
+          "severity": "critical"
+        }
+      ],
+      "fixture_sha256": "1a2428df8b822be26a2ffa2696694a3bd5f9094cec73ef0c1f634571084711ee",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {
+        "T3-C02": "Argument validation checks presence only, not exact keys, types, patterns or enums.",
+        "T3-C04": "Submission overwrites or ignores the stored fingerprint for an existing key.",
+        "T3-R02": "The attempt bound is off by one or excludes the first execution.",
+        "T3-R03": "Dedup or attempt state lives in memory or is reset on resubmission after restart.",
+        "T3-S01": "Redelivery re-queues an existing job (for example insert-or-replace).",
+        "T3-S02": "Raw exception text is persisted as the failure reason.",
+        "T3-S03": "Redelivery resets attempts or state, so the retry bound never takes effect."
+      },
+      "task_id": "task-03",
+      "total_score": null,
+      "verdict": "BLOCKED"
+    },
+    {
+      "automated_score": {
+        "earned": 82,
+        "max": 90
+      },
+      "blocking_failures": [],
+      "calibration": {
+        "expected_failed_checks": [
+          "T3-C03"
+        ],
+        "expected_verdict": "CHANGES_REQUESTED",
+        "match": true
+      },
+      "candidate_id": "partial",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [
+        {
+          "check_id": "T3-C03",
+          "failed_evidence_ids": [
+            "T3-C03:later_run",
+            "T3-C03:invocations",
+            "T3-C03:final_job"
+          ],
+          "severity": "major"
+        }
+      ],
+      "fixture_sha256": "4063022b3b557a81cbc7b26192ad532a7f911ffdd1efd0f03d5542023d20db67",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {
+        "T3-C03": "Failure handling ignores the error's retryable flag."
+      },
+      "task_id": "task-03",
+      "total_score": null,
+      "verdict": "CHANGES_REQUESTED"
+    },
+    {
+      "automated_score": {
+        "earned": 90,
+        "max": 90
+      },
+      "blocking_failures": [],
+      "calibration": {
+        "expected_failed_checks": [],
+        "expected_verdict": "REVIEW_PENDING",
+        "match": true
+      },
+      "candidate_id": "reference",
+      "evaluation_status": "COMPLETE",
+      "evaluator_errors": [],
+      "failed_checks": [],
+      "fixture_sha256": "ec4e69f300b9bb237a8fa7c21b844fa8d3ca8752d6c675c11c3c3e66a4d08054",
+      "manual_score": null,
+      "review_source": "none",
+      "suspected_causes": {},
+      "task_id": "task-03",
+      "total_score": null,
+      "verdict": "REVIEW_PENDING"
+    }
+  ],
+  "evidence_kinds": {
+    "automated_check": "Assertions from trusted oracle checks executed in this run on controlled fixtures.",
+    "candidate_failure": "FAIL: the candidate's observed behaviour violated an assertion.",
+    "evaluator_error": "ERROR/MISSING: the evaluator could not establish behaviour; never a pass or a zero.",
+    "provenance": "Fixtures and docs are AI-assisted and pending owner review. Review annotations are synthetic_example records. No real model output and no human review are included.",
+    "source_inspection": "Fixture-author notes with code locations in fixtures/*/DEFECTS.md; separate from test evidence and never read by the evaluator.",
+    "suspected_cause": "Inferred from failed assertions only; not proven by the tests."
+  },
+  "lab": "llm-code-evaluation-lab",
+  "positioning": "This repository is an independent portfolio laboratory. It is not presented as paid RLHF, data-labeling or professional AI-training-company experience. It demonstrates methods for designing, testing and evaluating technical code submissions using controlled fixtures.",
+  "schema_version": "1",
+  "simulated_review_demos": [
+    {
+      "automated_score": {
+        "earned": 90,
+        "max": 90
+      },
+      "blocking_failures": [],
+      "candidate_id": "reference",
+      "manual_score": {
+        "earned": 8,
+        "max": 10
+      },
+      "review_source": "synthetic_example",
+      "task_id": "task-01",
+      "total_score": {
+        "basis": "synthetic_example",
+        "earned": 98,
+        "max": 100
+      },
+      "verdict": "SIMULATED_REVIEW"
+    },
+    {
+      "automated_score": {
+        "earned": 48,
+        "max": 90
+      },
+      "blocking_failures": [
+        "T2-S01",
+        "T2-S02",
+        "T2-S03"
+      ],
+      "candidate_id": "flawed",
+      "manual_score": {
+        "earned": 10,
+        "max": 10
+      },
+      "review_source": "synthetic_example",
+      "task_id": "task-02",
+      "total_score": {
+        "basis": "synthetic_example",
+        "earned": 58,
+        "max": 100
+      },
+      "verdict": "BLOCKED"
+    }
+  ],
+  "summary": {
+    "calibration_mismatches": [],
+    "candidates_evaluated": 9,
+    "evaluations_incomplete": [],
+    "suite_status": "CALIBRATED"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "provenance": "synthetic_example",
+  "rubric_id": "maintainability-v1",
+  "notice": "Hand-crafted example labels written to demonstrate the agreement computation. example-reviewer-A and example-reviewer-B are not people or independent reviewers, and no real review was performed. Agreement here says nothing about accuracy or real reliability.",
+  "reviewers": ["example-reviewer-A", "example-reviewer-B"],
+  "items": {
+    "R1": "fixtures/task-01-api-idempotency/reference.py",
+    "R2": "fixtures/task-01-api-idempotency/flawed.py",
+    "R3": "fixtures/task-01-api-idempotency/partial.py",
+    "R4": "fixtures/task-02-tenant-authorization/reference.py",
+    "R5": "fixtures/task-02-tenant-authorization/flawed.py",
+    "R6": "fixtures/task-03-agent-jobs/partial.py"
+  },
+  "records": [
+    {"item_id": "R1", "reviewer_example_id": "example-reviewer-A", "category": "CLEAR", "score": 9, "rationale": "Validation, transaction and response building are separate functions.", "evidence_ref": "reference.py: normalize_body, OrderService._create_or_replay", "provenance": "synthetic_example"},
+    {"item_id": "R1", "reviewer_example_id": "example-reviewer-B", "category": "CLEAR", "score": 8, "rationale": "Single transaction boundary is easy to follow.", "evidence_ref": "reference.py: OrderService.create_order", "provenance": "synthetic_example"},
+    {"item_id": "R2", "reviewer_example_id": "example-reviewer-A", "category": "POOR", "score": 2, "rationale": "Process-local cache hides the real idempotency source of truth.", "evidence_ref": "flawed.py: OrderService._recent", "provenance": "synthetic_example"},
+    {"item_id": "R2", "reviewer_example_id": "example-reviewer-B", "category": "POOR", "score": 3, "rationale": "Audit table written but never read; misleading structure.", "evidence_ref": "flawed.py: SCHEMA, create_order", "provenance": "synthetic_example"},
+    {"item_id": "R3", "reviewer_example_id": "example-reviewer-A", "category": "NEEDS_IMPROVEMENT", "score": 5, "rationale": "Validation duplicated inline; fingerprint intent unclear.", "evidence_ref": "partial.py: validation_error, request_fingerprint", "provenance": "synthetic_example"},
+    {"item_id": "R3", "reviewer_example_id": "example-reviewer-B", "category": "CLEAR", "score": 8, "rationale": "Readable structure; rollback handling explicit.", "evidence_ref": "partial.py: OrderService.create_order", "provenance": "synthetic_example"},
+    {"item_id": "R4", "reviewer_example_id": "example-reviewer-A", "category": "CLEAR", "score": 9, "rationale": "Authentication, permission, validation and scoping are labelled steps.", "evidence_ref": "reference.py: DocumentService.handle", "provenance": "synthetic_example"},
+    {"item_id": "R4", "reviewer_example_id": "example-reviewer-B", "category": "CLEAR", "score": 9, "rationale": "Audit event shape is minimal and explicit.", "evidence_ref": "reference.py: DocumentService._deny", "provenance": "synthetic_example"},
+    {"item_id": "R5", "reviewer_example_id": "example-reviewer-A", "category": "POOR", "score": 1, "rationale": "Scope derived from mixed sources; SELECT * leaks schema changes.", "evidence_ref": "flawed.py: list branch, get branch", "provenance": "synthetic_example"},
+    {"item_id": "R5", "reviewer_example_id": "example-reviewer-B", "category": "NEEDS_IMPROVEMENT", "score": 4, "rationale": "Short and readable, but the denial helper logs too much.", "evidence_ref": "flawed.py: DocumentService._deny", "provenance": "synthetic_example"},
+    {"item_id": "R6", "reviewer_example_id": "example-reviewer-A", "category": "NEEDS_IMPROVEMENT", "score": 6, "rationale": "Comment justifies retrying every failure; the retryable flag is ignored.", "evidence_ref": "partial.py: JobWorker.run_due except branch", "provenance": "synthetic_example"},
+    {"item_id": "R6", "reviewer_example_id": "example-reviewer-B", "category": "NEEDS_IMPROVEMENT", "score": 6, "rationale": "State transitions clear, failure classification missing.", "evidence_ref": "partial.py: JobWorker.run_due", "provenance": "synthetic_example"}
+  ]
+}

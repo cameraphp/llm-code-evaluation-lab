@@ -1,0 +1,3 @@
+# Store and check out text files with LF endings on every platform. The curated reports/ are
+# compared byte for byte with fresh runs, and fixture digests are computed on LF-normalized bytes.
+* text=auto eol=lf

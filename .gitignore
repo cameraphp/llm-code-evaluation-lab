@@ -1,0 +1,24 @@
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+artifacts/
+build/
+dist/
+
+# Private working prompts (not part of the public lab)
+prompts/
+
+# Local environment, editor and runtime files
+.env
+.env.*
+.vscode/
+.idea/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+*.bak

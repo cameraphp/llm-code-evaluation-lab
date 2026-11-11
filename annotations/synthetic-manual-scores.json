@@ -1,0 +1,8 @@
+{
+  "provenance": "synthetic_example",
+  "notice": "Explicitly synthetic manual-review annotations. They only demonstrate how the 10-point reviewer component combines with the automated score and gating. They are not human reviews and never produce an approval verdict.",
+  "reviews": [
+    {"task_id": "task-01", "candidate_id": "reference", "points": 8, "review_source": "synthetic_example", "rubric_id": "maintainability-v1"},
+    {"task_id": "task-02", "candidate_id": "flawed", "points": 10, "review_source": "synthetic_example", "rubric_id": "maintainability-v1"}
+  ]
+}

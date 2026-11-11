@@ -1,0 +1,100 @@
+# Minimal read-only CI: re-runs the existing local checks. No secrets, providers, uploads or deployment.
+# Windows runner: the lab was built and tested on Windows; Linux support has not been verified.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint, tests and calibration (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      # .gitattributes forces LF checkout, so the byte comparison with reports/ is platform-independent.
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      # Documented install (README); tool versions held to those recorded in BUILD_REPORT.md.
+      - name: Install project and dev tooling
+        run: |
+          python -m pip install -e ".[dev]" "pytest==9.2.0" "ruff==0.17.4"
+          if ($LASTEXITCODE -ne 0) { throw "install failed" }
+
+      - name: Ruff lint and format
+        run: |
+          ruff check src tests fixtures
+          if ($LASTEXITCODE -ne 0) { throw "ruff check failed" }
+          ruff format --check src tests fixtures
+          if ($LASTEXITCODE -ne 0) { throw "ruff format --check failed" }
+
+      - name: Pytest
+        run: |
+          python -m pytest -q
+          if ($LASTEXITCODE -ne 0) { throw "pytest failed" }
+
+      # evaluate-suite exits 0 only when all nine evaluations are COMPLETE and match calibration
+      # (1 = calibration mismatch, 3 = setup error / INCOMPLETE). Blocked candidates are expected.
+      - name: Calibrated suite, two fresh runs, byte comparison
+        run: |
+          foreach ($run in "ci-run-a", "ci-run-b") {
+            python -m code_eval_lab evaluate-suite --output "artifacts/$run"
+            if ($LASTEXITCODE -ne 0) { throw "evaluate-suite $run exited $LASTEXITCODE" }
+            $summary = (Get-Content "artifacts/$run/sample-evaluation.json" -Raw | ConvertFrom-Json).summary
+            if ($summary.suite_status -ne "CALIBRATED" -or $summary.candidates_evaluated -ne 9) {
+              throw "$run not CALIBRATED with 9 candidates"
+            }
+          }
+          foreach ($name in "sample-evaluation.json", "sample-evaluation.md") {
+            $hashes = "artifacts/ci-run-a", "artifacts/ci-run-b", "reports" |
+              ForEach-Object { (Get-FileHash -Algorithm SHA256 "$_/$name").Hash }
+            Write-Output "$name $($hashes -join ' ')"
+            if (@($hashes | Select-Object -Unique).Count -ne 1) { throw "$name differs between runs or from reports/" }
+          }
+
+      # Documented per-candidate exits: 0 = not blocked, 1 = correctly BLOCKED (not an evaluator
+      # error), 3 = evaluator/setup error or INCOMPLETE (always fails here).
+      - name: Per-candidate exit codes and verdicts
+        run: |
+          $expected = @(
+            @("task-01", "reference", 0, "REVIEW_PENDING"), @("task-01", "flawed", 1, "BLOCKED"),
+            @("task-01", "partial", 1, "BLOCKED"), @("task-02", "reference", 0, "REVIEW_PENDING"),
+            @("task-02", "flawed", 1, "BLOCKED"), @("task-02", "partial", 1, "BLOCKED"),
+            @("task-03", "reference", 0, "REVIEW_PENDING"), @("task-03", "flawed", 1, "BLOCKED"),
+            @("task-03", "partial", 0, "CHANGES_REQUESTED")
+          )
+          foreach ($e in $expected) {
+            $out = "artifacts/ci-$($e[0])-$($e[1])"
+            python -m code_eval_lab evaluate --task $e[0] --candidate $e[1] --output $out
+            $code = $LASTEXITCODE
+            $report = Get-Content "$out/evaluation.json" -Raw | ConvertFrom-Json
+            if ($code -ne $e[2] -or $report.evaluation_status -ne "COMPLETE" -or $report.verdict -ne $e[3]) {
+              throw "$($e[0])/$($e[1]): exit $code, $($report.evaluation_status), $($report.verdict)"
+            }
+          }
+          $global:LASTEXITCODE = 0
+
+      - name: Synthetic agreement demo
+        run: |
+          $raw = python -m code_eval_lab agreement
+          if ($LASTEXITCODE -ne 0) { throw "agreement exited $LASTEXITCODE" }
+          $a = ($raw | Out-String) | ConvertFrom-Json
+          Write-Output "source=$($a.source) n=$($a.paired_n) exact=$($a.exact_agreement.fraction) kappa=$($a.cohen_kappa.fraction)"
+          if ($a.source -ne "synthetic_example" -or $a.paired_n -ne 6 -or
+              $a.exact_agreement.fraction -ne "2/3" -or $a.cohen_kappa.fraction -ne "1/2") {
+            throw "agreement demo output differs from the documented synthetic example"
+          }
