@@ -22,3 +22,8 @@ prompts/
 *.sqlite
 *.sqlite3
 *.bak
+
+# Node & TestDriver
+node_modules/
+.testdriver/
+test-results/
